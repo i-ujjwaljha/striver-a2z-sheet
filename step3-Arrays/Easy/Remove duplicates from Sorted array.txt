@@ -1,0 +1,67 @@
+✅ Problem Summary:
+You are given a sorted array. You need to:
+
+Remove duplicates in-place (i.e., no extra arrays).
+
+Keep the relative order the same.
+
+Return the number of unique elements k, and the first k elements of the array must be those unique elements.
+------------------------
+🧠 INTUITION:
+Since the array is already sorted, duplicates will be next to each other. For example:
+
+[0, 0, 1, 1, 2, 3, 3]
+We want to go through the array, and only keep the first occurrence of each number, like this:
+
+[0, 1, 2, 3, ...]
+We’ll use a two-pointer approach:
+
+Two pointers:
+i: slow pointer (points to the last unique element we’ve seen).
+
+j: fast pointer (scans the array from left to right).
+
+Logic:
+Start from i = 0.
+
+Let j go from 1 to end of array.
+
+If nums[j] != nums[i], it means we found a new unique number!
+
+So move i++, and copy nums[j] to nums[i].
+
+By the end:
+
+The first i+1 elements of the array are unique.
+
+We return i+1 as the answer.
+----------------------------
+----------------------------
+CODE
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int removeDuplicates(vector<int>& nums) {
+    if (nums.empty()) return 0;  // Edge case: empty array
+
+    int slow = 0;  // slow pointer for unique elements
+
+    for (int fast = 1; fast < nums.size(); fast++) {
+        // Only copy if we find a different number (i.e., a unique one)
+        if (nums[fast] != nums[slow]) {
+            slow++;            // Move the unique position forward
+            nums[slow] = nums[fast];  // Update the array in-place
+        }
+    }
+
+    return slow + 1; // because slow is index-based (starts from 0)
+}
+---------------------------
+✅ Final Notes:
+This is O(n) time and O(1) space.
+
+It works because the array is sorted.
+
+You don’t need to worry about what comes after the k elements.
