@@ -1,0 +1,64 @@
+INTUTION AND RECOGNITION
+The problem asks us to rearrange an array nums such that all 0s are at the end, and the relative order of the non-zero elements is preserved. The key constraints are "in-place" and "without making a copy."
+
+Here's what should immediately come to mind:
+
+"Move all 0's to the end": This means 0s should fill the suffix of the array.
+"Maintaining the relative order of the non-zero elements": This is crucial. If you have [1, 5, 2, 0, 3], the non-zero elements 1, 5, 2, 3 must remain in that exact sequence, even if they are shifted. You can't, for example, end up with [5, 1, 2, 3, 0].
+"In-place": This means you modify the original nums array directly. You cannot create a new array, populate it, and then assign it back to nums.
+"Without making a copy of the array": This reinforces the "in-place" constraint and also typically implies an O(1) extra space complexity (beyond the input array itself).
+
+How to recognize it:
+
+This is a classic array manipulation problem that often points to a "two-pointer" approach or a variation of it. When you need to reorder elements in an array while preserving relative order and doing it in-place, two pointers are a very common and efficient technique.
+
+The core idea is to maintain two sections of the array:
+
+Elements that are already in their final, sorted-like position (non-zeros on the left).
+Elements that are yet to be processed.
+
+-----------------------------------
+
+APPROACH
+Let's use a two-pointer approach. We'll have one pointer (write_ptr or non_zero_ptr) to track where the next non-zero element should be placed, and another pointer (read_ptr or current_ptr) to iterate through the entire array.
+
+The Strategy:
+
+Initialize a write_ptr to 0. This pointer will always point to the position where the next non-zero element should be placed.
+
+Iterate through the array using a read_ptr from 0 to nums.size() - 1.
+
+If nums[read_ptr] is a non-zero element:
+It means this element needs to be moved to the left side of the array (where write_ptr is pointing).
+
+Swap nums[read_ptr] with nums[write_ptr].
+
+Increment write_ptr because we've now placed a non-zero element in its correct relative position.
+
+If nums[read_ptr] is 0:
+Do nothing. We effectively "skip" this zero. The write_ptr remains where it is, waiting for the next non-zero element. This 0 will eventually be overwritten by a non-zero element from later in the array, or it will remain a 0 if it falls in the "zeroes at the end" section.
+
+Why this works (and maintains relative order):
+
+write_ptr only advances when a non-zero element is placed. This ensures that all elements from 0 to write_ptr - 1 are non-zero and are in their correct relative order.
+When nums[read_ptr] is non-zero, it's placed at nums[write_ptr]. Since write_ptr started at 0 and only increments for non-zeros, it correctly places the non-zero elements one after another.
+Any 0s encountered by read_ptr are eventually left behind, effectively creating a "gap" of 0s that are filled at the end of the process.
+
+------------------------------------
+
+CODE
+
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        int write_ptr = 0;  //write_ptr' (or 'non_zero_ptr') keeps track of the position where the next non-zero element should be placed.
+
+        //read_ptr scans all elements
+        for(int read_ptr = 0; read_ptr<nums.size(); ++read_ptr)
+            if(nums[read_ptr] != 0)
+            {
+                swap(nums[write_ptr], nums[read_ptr]);
+                write_ptr++;
+            }
+    }
+};

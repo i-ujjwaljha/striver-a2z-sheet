@@ -1,0 +1,42 @@
+APPROACH: SUMMATION
+
+The sum of integers from 0 to n can be calculated using the arithmetic series formula: S= n×(n+1)/2
+​
+We can then calculate the sum of all numbers currently present in nums.
+The difference between the expected sum and the actual sum will be the missing number.
+
+Steps:
+
+Determine n. In this problem, n is nums.size().
+
+Calculate the expected_sum of numbers from 0 to n using the formula: n * (n + 1) / 2.
+
+Calculate the actual_sum by iterating through nums and summing its elements.
+The missing_number = expected_sum - actual_sum.
+
+Complexity:
+
+Time Complexity: O(N) because we iterate through the nums array once to calculate actual_sum.
+Space Complexity: O(1) because we only use a few variables to store sums.
+
+Potential Issue:
+Integer overflow for very large n. If n is large (e.g., 10^9), n * (n+1) can exceed the capacity of a standard int. Using long long for sums in C++ resolves this. For n = 10^5, n * (n+1) / 2 would be around 5×10^9, which fits in long long. Standard int max is usually 2×10^9, so long long is a good practice.
+
+------------------------------------
+
+CODE
+
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int n = nums.size();
+
+        int expected_sum = (n*(n+1)/2);
+
+        long long actual_sum = 0;
+        for(int num : nums)
+            actual_sum += num;
+
+        return expected_sum-actual_sum;
+    }
+};

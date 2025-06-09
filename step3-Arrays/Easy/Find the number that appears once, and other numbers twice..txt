@@ -1,0 +1,78 @@
+INTUTION AND RECOGNITION
+
+The problem states: "Given a non-empty array of integers nums, every element appears twice except for one. Find that single one." It also has strict constraints: "linear runtime complexity" and "only constant extra space."
+
+Here's what should immediately jump out:
+
+"Every element appears twice except for one": This is the core property. It means we have pairs of numbers, and one unique number that doesn't have a pair.
+
+"Non-empty array": Guarantees there's at least one element.
+"Linear runtime complexity (O(N))": We should aim for a solution that processes each element a constant number of times. This typically means a single pass or a fixed number of passes.
+
+"Only constant extra space (O(1))": This is the most crucial constraint. It rules out solutions that use hash maps/sets, frequency arrays, or sorting if they require space proportional to N.
+
+How to recognize it:
+
+The "every element appears twice except for one" property, combined with the O(1) space constraint, is a strong indicator for Bit Manipulation, specifically the XOR operation.
+
+Why XOR?
+
+Recall the properties of the XOR (^) operation:
+
+a ^ a = 0: Any number XORed with itself results in 0.
+a ^ 0 = a: Any number XORed with 0 results in the number itself.
+Commutativity and Associativity: a ^ b = b ^ a and (a ^ b) ^ c = a ^ (b ^ c). This means the order of XOR operations doesn't matter.
+If you XOR all the numbers in the array together, all the pairs will cancel each other out, leaving only the single unique number.
+
+For example, [2, 2, 1]
+2 ^ 2 ^ 1
+= (2 ^ 2) ^ 1 (by associativity)
+= 0 ^ 1 (since 2 ^ 2 = 0)
+= 1 (since 0 ^ 1 = 1)
+
+This property perfectly fits the problem's requirements.
+
+--------------------------
+
+APPROACH
+
+The approach is straightforward and directly utilizes the XOR property.
+
+Algorithm Steps:
+
+1. Initialize a variable, say single_number, to 0. This will store our XOR result.
+
+2. Iterate through each num in the input nums array.
+
+3. For each num, update single_number = single_number ^ num.
+
+4. After iterating through all elements, single_number will hold the value of the unique element. Return single_number.
+
+------------------------------
+
+Complexity Analysis:
+
+Time Complexity: O(N)
+We iterate through the nums array exactly once. Each XOR operation is a constant-time operation. Therefore, the total time complexity is linear with respect to the number of elements N.
+Space Complexity: O(1)
+We only use a single variable (single_number) to store the XOR result. No auxiliary data structures are used that grow with the input size.
+
+---------------------------------
+
+CODE
+
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int single_num = 0;
+
+        for(int num : nums)
+            single_num^=num;
+
+        return single_num;        
+    }
+};
+
+// Due to the properties of XOR:
+// - If a number appears twice (e.g., A ^ A), they will cancel each other out (result in 0).
+// - The single unique number will remain (e.g., (A ^ A ^ B) = 0 ^ B = B).

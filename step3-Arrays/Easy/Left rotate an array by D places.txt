@@ -1,0 +1,54 @@
+🔍 Problem Summary:
+Given an array nums, rotate it to the right by k positions.
+
+Right rotation means moving each element k positions to the right, and the elements that go past the end come back to the front.
+
+nums = [1,2,3,4,5,6,7], k = 3
+// Output: [5,6,7,1,2,3,4]
+
+------------------------
+🧠 Intuition
+Every element moves to the right by k places.
+
+But if k is larger than the size of the array, we don’t want to rotate unnecessarily.
+
+So we take k % n (n = array size).
+-------------------------
+✅ Efficient Idea (Using Reversal):
+To rotate the array efficiently in-place and in O(n) time, we can use a 3-step reverse method:
+
+🔄 Reverse Steps:
+Reverse the whole array
+
+Reverse the first k elements
+
+Reverse the remaining n - k elements
+
+This trick moves elements into the correct rotated positions.
+--------------------------
+CODE
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Helper function to reverse part of the array
+void reverse(vector<int>& nums, int start, int end) {
+    while (start < end) {
+        swap(nums[start], nums[end]);
+        start++;
+        end--;
+    }
+}
+
+void rotate(vector<int>& nums, int k) {
+    int n = nums.size();
+    k = k % n; // In case k > n
+
+    // Step 1: Reverse entire array
+    reverse(nums, 0, n - 1);
+    // Step 2: Reverse first k elements
+    reverse(nums, 0, k - 1);
+    // Step 3: Reverse remaining n - k elements
+    reverse(nums, k, n - 1);
+}

@@ -1,0 +1,51 @@
+APPROACH
+
+The most intuitive and efficient approach is a single pass through the array. We need two variables:
+
+current_consecutive_ones: To keep track of the number of 1s in the current consecutive sequence.
+max_consecutive_ones: To store the overall maximum number of consecutive 1s found so far across the entire array.
+Algorithm Steps:
+
+Initialize max_consecutive_ones = 0.
+Initialize current_consecutive_ones = 0.
+Iterate through each num in the nums array:
+If num is 1:
+Increment current_consecutive_ones.
+Update max_consecutive_ones = std::max(max_consecutive_ones, current_consecutive_ones). (This step is crucial; you might be tempted to update max_consecutive_ones only when a 0 is encountered, but if the array ends with 1s, the last sequence might not be counted).
+If num is 0:
+The current sequence of 1s is broken.
+Reset current_consecutive_ones = 0.
+After iterating through the entire array, max_consecutive_ones will hold the maximum count. Return it.
+
+-----------------------------
+Complexity Analysis:
+
+Time Complexity: O(N)
+We iterate through the nums array exactly once. For each element, we perform a constant number of operations (increment, comparison, assignment).
+
+Space Complexity: O(1)
+We only use a few constant-space variables (current_consecutive_ones, max_consecutive_ones). No auxiliary data structures are used that grow with the input size.
+
+---------------------------
+
+CODE
+
+class Solution {
+public:
+    int findMaxConsecutiveOnes(vector<int>& nums) {
+        int max_consecutive = 0;   
+        int current_consecutive = 0; 
+        
+        for(int num : nums)
+        {
+            if(num == 1)
+                current_consecutive++;
+            
+            else
+                current_consecutive = 0;
+
+            max_consecutive = max(current_consecutive, max_consecutive);
+        }
+        return max_consecutive;
+    }
+};
