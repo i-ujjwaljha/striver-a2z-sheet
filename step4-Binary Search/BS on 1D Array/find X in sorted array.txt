@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int n = nums.size();
+        int low = 0, high = n-1;
+        while(low <= high)
+        {
+            int mid = (low + high)/2;
+
+            if(nums[mid] == target)
+                return mid;
+            
+            else if(nums[mid] > target)
+                high = mid-1;
+
+            else
+                low = mid+1;
+        }
+        return -1;
+    }
+};
+
+Here we have used "mid + 1" and "mid - 1" instead of 'mid++' and 'mid--' because  Why they cause TLE: These lines assign mid to high or low before incrementing/decrementing mid. This means mid itself is not properly excluded from the search range, which can lead to infinite loops or extremely slow convergence, failing to halve the search space effectively.
+
+The correct pointer updates ensure the search space is consistently halved, leading to the efficient O(logN) time complexity expected of binary search.
